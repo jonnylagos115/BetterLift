@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_edit"
+        android:title="@string/workout_item_action_edit"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_rename"
+        android:title="@string/workout_item_action_rename"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_duplicate"
+        android:title="@string/workout_item_action_duplicate"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/workout_item_action_delete"
+        app:showAsAction="never"/>
+
+</menu>
