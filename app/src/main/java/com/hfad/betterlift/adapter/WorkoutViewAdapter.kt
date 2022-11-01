@@ -29,6 +29,12 @@ class WorkoutViewAdapter()
 
     override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
         holder.bind(WorkoutRepo.workout[position])
+        /**
+         * holder.itemView.setOnClickListener {
+         *      val workout = WorkoutRepo.workout[position]
+         *
+         *      val action = {go to nav_graph to set up navigation sequence to start workout screen}
+         */
     }
 
     override fun getItemCount() = WorkoutRepo.workout.size

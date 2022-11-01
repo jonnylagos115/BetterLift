@@ -1,6 +1,7 @@
-package com.hfad.betterlift.models
+package com.hfad.betterlift.data
 
 import com.hfad.betterlift.R
+import com.hfad.betterlift.models.Exercise
 
 object ExerciseRepo {
     val exercise = mutableListOf(

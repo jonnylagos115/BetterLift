@@ -1,10 +1,14 @@
-package com.hfad.betterlift
+package com.hfad.betterlift.ui.workout
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.hfad.betterlift.adapter.WorkoutViewAdapter
 import com.hfad.betterlift.databinding.FragmentWorkoutNewTemplateBinding
 
 class WorkoutNewTemplateFragment : Fragment() {
@@ -22,8 +26,20 @@ class WorkoutNewTemplateFragment : Fragment() {
     ): View? {
         // Retrieve and inflate the layout for this fragment
         _binding = FragmentWorkoutNewTemplateBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.newWorkoutTemplatesList.adapter = WorkoutViewAdapter()
+        binding.newWorkoutTemplatesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+
+        /**
+         * Add action bar icon item that allows user to create and save the current state of template
+         */
+       binding.addExerciseButton.setOnClickListener {
+            val action = WorkoutNewTemplateFragmentDirections.actionWorkoutNewTemplateFragmentToExerciseAddFragment()
+            view.findNavController().navigate(action)
+           }
     }
 
     /**

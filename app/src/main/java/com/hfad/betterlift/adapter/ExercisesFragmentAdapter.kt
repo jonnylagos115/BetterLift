@@ -2,18 +2,16 @@ package com.hfad.betterlift.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.hfad.betterlift.ExercisesFragmentDirections
-import com.hfad.betterlift.R
+
 import com.hfad.betterlift.databinding.FragmentExercisesListItemBinding
 import com.hfad.betterlift.models.Exercise
-import com.hfad.betterlift.models.ExerciseRepo
+import com.hfad.betterlift.data.ExerciseRepo
+import com.hfad.betterlift.ui.exercise.ExercisesFragmentDirections
 
-class ExercisesViewAdapter :
-    RecyclerView.Adapter<ExercisesViewAdapter.ExercisesViewHolder>()
+class ExercisesFragmentAdapter :
+    RecyclerView.Adapter<ExercisesFragmentAdapter.ExercisesViewHolder>()
 {
     class ExercisesViewHolder(private val binding: FragmentExercisesListItemBinding) :
         RecyclerView.ViewHolder(binding.root){
@@ -37,7 +35,6 @@ class ExercisesViewAdapter :
             val exercise = ExerciseRepo.exercise[position]
 
             val action = ExercisesFragmentDirections.actionExercisesFragmentToExerciseDetailFragment(exercise = exercise, exerciseLabel = exercise.exerciseName)
-
             holder.itemView.findNavController().navigate(action)
         }
     }

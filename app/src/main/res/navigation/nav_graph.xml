@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/exercisesFragment"
-        android:name="com.hfad.betterlift.ExercisesFragment"
+        android:name="com.hfad.betterlift.ui.exercise.ExercisesFragment"
         android:label="@string/menu_exercises"
         tools:layout="@layout/fragment_exercises">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/exerciseDetailFragment"
-        android:name="com.hfad.betterlift.ExerciseDetailFragment"
+        android:name="com.hfad.betterlift.ui.exercise.ExerciseDetailFragment"
         android:label="@string/exercise_detail_fragment_label" >
         <argument
             android:name="exercise"
@@ -27,12 +27,12 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.hfad.betterlift.ProfileFragment"
+        android:name="com.hfad.betterlift.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/workoutFragment"
-        android:name="com.hfad.betterlift.WorkoutFragment"
+        android:name="com.hfad.betterlift.ui.workout.WorkoutFragment"
         android:label="@string/menu_workout"
         tools:layout="@layout/fragment_workout" >
         <action
@@ -41,6 +41,14 @@
     </fragment>
     <fragment
         android:id="@+id/workoutNewTemplateFragment"
-        android:name="com.hfad.betterlift.WorkoutNewTemplateFragment"
-        android:label="WorkoutNewTemplateFragment" />
+        android:name="com.hfad.betterlift.ui.workout.WorkoutNewTemplateFragment"
+        android:label="WorkoutNewTemplateFragment" >
+        <action
+            android:id="@+id/action_workoutNewTemplateFragment_to_exerciseAddFragment"
+            app:destination="@id/exerciseAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseAddFragment"
+        android:name="com.hfad.betterlift.ui.exercise.ExerciseAddFragment"
+        android:label="ExerciseAddFragment" />
 </navigation>

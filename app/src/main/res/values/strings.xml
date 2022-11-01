@@ -14,7 +14,7 @@
     <string name="create_exercise">Create Exercise</string>
     <string name="create_workout">Create Workout</string>
     <string name="workout_note">Workout note</string>
-
+    <string name="enter_workout_template_title">Enter title</string>
     <string name="set_header">Set</string>
     <string name="previous_header">Previous</string>
     <string name="pounds_header">LBS</string>

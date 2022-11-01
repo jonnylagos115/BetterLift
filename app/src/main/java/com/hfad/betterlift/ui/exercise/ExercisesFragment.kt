@@ -1,23 +1,24 @@
-package com.hfad.betterlift
+package com.hfad.betterlift.ui.exercise
 
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hfad.betterlift.adapter.ExercisesViewAdapter
+import com.hfad.betterlift.R
+import com.hfad.betterlift.adapter.ExercisesFragmentAdapter
+import com.hfad.betterlift.adapter.WorkoutAddExercisesAdapter
 import com.hfad.betterlift.databinding.FragmentExercisesBinding
 
 class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener {
 
     private val TAG = "ExercisesFragment"
     private var _binding: FragmentExercisesBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -36,7 +37,7 @@ class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
 
-        binding.exercisesList.adapter = ExercisesViewAdapter()
+        binding.exercisesList.adapter = ExercisesFragmentAdapter()
         binding.exercisesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
 

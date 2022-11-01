@@ -1,4 +1,4 @@
-package com.hfad.betterlift
+package com.hfad.betterlift.ui.workout
 
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hfad.betterlift.R
 import com.hfad.betterlift.adapter.WorkoutViewAdapter
 import com.hfad.betterlift.databinding.FragmentWorkoutBinding
 
@@ -41,15 +42,18 @@ class WorkoutFragment : Fragment() {
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.exercise_detail_app_bar_menu, menu)
+                menuInflater.inflate(R.menu.workout_detail_app_bar_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when(menuItem.itemId){
-                    R.id.action_create_workout -> {
+                    R.id.workoutNewTemplateFragment -> {
                         Log.d(TAG, "Fab got clicked in onViewCreated")
-                        return NavigationUI.onNavDestinationSelected(menuItem!!,
-                            view!!.findNavController())
+                        /**
+                         * Look into below, not sure if nagivation here is set up correctly
+                         */
+                        val navController = findNavController()
+                        return menuItem.onNavDestinationSelected(navController)
                     }
                 }
                 return true

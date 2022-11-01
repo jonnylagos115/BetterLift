@@ -15,9 +15,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title_new_template_edit_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textUri|textShortMessage|textLongMessage" />
+            android:inputType="textUri|textShortMessage|textLongMessage"
+            android:hint="@string/enter_workout_template_title"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

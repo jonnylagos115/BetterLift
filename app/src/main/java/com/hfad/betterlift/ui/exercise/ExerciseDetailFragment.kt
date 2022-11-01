@@ -1,4 +1,4 @@
-package com.hfad.betterlift
+package com.hfad.betterlift.ui.exercise
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.hfad.betterlift.databinding.FragmentExerciseDetailBinding
-import com.hfad.betterlift.databinding.FragmentExercisesBinding
 import com.hfad.betterlift.models.Exercise
 
 class ExerciseDetailFragment : Fragment() {
@@ -23,7 +22,7 @@ class ExerciseDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Retrieve the LETTER from the Fragment arguments
-        arguments?.let {
+        args.let {
             exercise = args.exercise
         }
     }

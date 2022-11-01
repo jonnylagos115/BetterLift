@@ -1,15 +1,14 @@
-package com.hfad.betterlift
+package com.hfad.betterlift.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.hfad.betterlift.R
 import com.hfad.betterlift.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +31,8 @@ class MainActivity : AppCompatActivity() {
             .Builder(
                 R.id.profileFragment,
                 R.id.workoutFragment,
-                R.id.exercisesFragment)
+                R.id.exercisesFragment
+            )
             .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
 
