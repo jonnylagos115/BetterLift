@@ -11,15 +11,16 @@
     <string name="add_exercise">Add Exercise</string>
     <string name="add_set">Add Set</string>
     <string name="action_switch_layout">Switch Layout</string>
+
     <string name="create_exercise">Create Exercise</string>
     <string name="create_workout">Create Workout</string>
+
     <string name="workout_note">Workout note</string>
     <string name="enter_workout_template_title">Enter title</string>
     <string name="set_header">Set</string>
     <string name="previous_header">Previous</string>
     <string name="pounds_header">LBS</string>
     <string name="reps_header">Reps</string>
-
 
     <string name="workout_item_action_edit">Edit</string>
     <string name="workout_item_action_rename">Rename</string>

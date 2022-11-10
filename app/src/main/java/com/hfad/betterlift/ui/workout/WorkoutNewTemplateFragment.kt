@@ -43,7 +43,7 @@ class WorkoutNewTemplateFragment : Fragment() {
     }
 
     /**
-     * Frees the binding object when the Fragment is destroyed.
+     * Frees the binding object when the FragmentType is destroyed.
      */
     override fun onDestroyView() {
         super.onDestroyView()

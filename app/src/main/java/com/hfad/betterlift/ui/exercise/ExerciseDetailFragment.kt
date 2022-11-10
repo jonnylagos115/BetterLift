@@ -21,7 +21,7 @@ class ExerciseDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve the LETTER from the Fragment arguments
+        // Retrieve the LETTER from the FragmentType arguments
         args.let {
             exercise = args.exercise
         }
@@ -41,7 +41,7 @@ class ExerciseDetailFragment : Fragment() {
     }
 
     /**
-     * Frees the binding object when the Fragment is destroyed.
+     * Frees the binding object when the FragmentType is destroyed.
      */
     override fun onDestroyView() {
         super.onDestroyView()

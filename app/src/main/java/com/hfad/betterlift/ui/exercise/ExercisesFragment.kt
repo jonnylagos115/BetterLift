@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.R
 import com.hfad.betterlift.adapter.ExercisesFragmentAdapter
-import com.hfad.betterlift.adapter.WorkoutAddExercisesAdapter
+import com.hfad.betterlift.const.FragmentType
 import com.hfad.betterlift.databinding.FragmentExercisesBinding
 
 class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener {
@@ -37,17 +36,17 @@ class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
 
-        binding.exercisesList.adapter = ExercisesFragmentAdapter()
+        binding.exercisesList.adapter = ExercisesFragmentAdapter(FragmentType.EXERCISES)
         binding.exercisesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
 
-        // Add menu items without using the Fragment Menu APIs
+        // Add menu items without using the FragmentType Menu APIs
         // Note how we can tie the MenuProvider to the viewLifecycleOwner
         // and an optional Lifecycle.State (here, RESUMED) to indicate when
         // the menu should be visible
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.exercise_detail_app_bar_menu, menu)
+                menuInflater.inflate(R.menu.exercise_detail_action_create_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -63,7 +62,7 @@ class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener 
     }
 
     /**
-     * Frees the binding object when the Fragment is destroyed.
+     * Frees the binding object when the FragmentType is destroyed.
      */
     override fun onDestroyView() {
         super.onDestroyView()

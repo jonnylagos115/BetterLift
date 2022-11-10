@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()  || super.onSupportNavigateUp()
     }
-
     private fun handleBottomNavigation(navController: NavController){
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_bar)
         bottomNav?.setupWithNavController(navController)

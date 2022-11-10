@@ -11,4 +11,5 @@ data class Exercise(
     @DrawableRes val imageReferenceId: Int
 ): Parcelable {
     var instructionList: String? = null
+    var isSelected: Boolean? = false
 }
