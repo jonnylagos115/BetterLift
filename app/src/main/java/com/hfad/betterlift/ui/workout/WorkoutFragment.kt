@@ -1,5 +1,6 @@
 package com.hfad.betterlift.ui.workout
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,8 +13,9 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.R
-import com.hfad.betterlift.adapter.WorkoutViewAdapter
+import com.hfad.betterlift.adapter.WorkoutFragmentListAdapter
 import com.hfad.betterlift.databinding.FragmentWorkoutBinding
+import com.hfad.betterlift.ui.MainActivity
 
 class WorkoutFragment : Fragment() {
 
@@ -28,42 +30,40 @@ class WorkoutFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        Log.d(TAG, "CreatedWorkoutFragment")
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
 
-        binding.workoutTemplatesList.adapter = WorkoutViewAdapter()
+        binding.workoutTemplatesList.adapter = WorkoutFragmentListAdapter()
         binding.workoutTemplatesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
+        Log.d(TAG, "Inside view created")
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.workout_detail_app_bar_menu, menu)
+                menuInflater.inflate(R.menu.workout_tab_app_bar_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when(menuItem.itemId){
-                    R.id.workoutNewTemplateFragment -> {
-                        Log.d(TAG, "Fab got clicked in onViewCreated")
-                        /**
-                         * Look into below, not sure if nagivation here is set up correctly
-                         */
-                        val navController = findNavController()
-                        return menuItem.onNavDestinationSelected(navController)
+                return when(menuItem.itemId){
+                    R.id.action_workoutNewTemplateFragment -> {
+                        val action = WorkoutFragmentDirections.actionNavWorkoutToNavWorkoutNewTemplateFragment()
+                        findNavController().navigate(action)
+                        return true
                     }
+                    else -> false
                 }
-                return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
     /**
      * Frees the binding object when the FragmentType is destroyed.
      */
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

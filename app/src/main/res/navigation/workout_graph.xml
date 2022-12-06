@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workout"
+    app:startDestination="@id/nav_workout">
+
+    <fragment
+        android:id="@+id/nav_workout"
+        android:name="com.hfad.betterlift.ui.workout.WorkoutFragment"
+        android:label="@string/menu_workout"
+        tools:layout="@layout/fragment_workout" >
+        <action
+            android:id="@+id/action_nav_workout_to_nav_workout_new_template_fragment"
+            app:destination="@id/nav_workout_new_template_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_workout_new_template_fragment"
+        android:name="com.hfad.betterlift.ui.workout.WorkoutNewTemplateFragment"
+        android:label="WorkoutNewTemplateFragment"
+        tools:layout="@layout/fragment_workout_new_template">
+        <action
+            android:id="@+id/action_nav_workout_new_template_fragment_to_nav_exercise_add_fragment"
+            app:destination="@id/nav_exercise_add_fragment" />
+        <action
+            android:id="@+id/action_nav_workout_new_template_fragment_to_nav_workout"
+            app:destination="@id/nav_workout"
+            app:popUpTo="@id/nav_workout"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_exercise_add_fragment"
+        android:name="com.hfad.betterlift.ui.exercise.ExerciseAddFragment"
+        android:label="ExerciseAddFragment"
+        tools:layout="@layout/fragment_exercise"/>
+
+</navigation>

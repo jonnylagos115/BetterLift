@@ -1,10 +1,13 @@
 package com.hfad.betterlift.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Workout (
-    var templateTitle: String,
-    var lastPerformed: String,
-    var workoutExerciseList: MutableList<String> = mutableListOf<String>()) {
-    var numberOfSets: Int = 0
-    var numberOfPounds: Int = 0
-    var numberOfReps: Int = 0
+    var exerciseList: MutableList<Exercise> = mutableListOf<Exercise>(),
+) : Parcelable {
+    var templateTitle: String? = null
+    var lastPerformed: String? = null
+    var workoutNotes: String? = null
 }

@@ -2,7 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/workoutNewTemplateFragment"
+        android:id="@+id/workoutFragment"
+        android:title="@string/save_button"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_workoutNewTemplateFragment"
         android:title="@string/create_workout"
         app:showAsAction="never"/>
+
+
 </menu>

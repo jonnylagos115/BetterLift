@@ -12,4 +12,7 @@ data class Exercise(
 ): Parcelable {
     var instructionList: String? = null
     var isSelected: Boolean? = false
+    val numberOfPounds: MutableList<Int> = mutableListOf()
+    val numberOfReps: MutableList<Int> = mutableListOf()
+    var numberOfSets: Int = 1
 }

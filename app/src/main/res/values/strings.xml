@@ -11,6 +11,7 @@
     <string name="add_exercise">Add Exercise</string>
     <string name="add_set">Add Set</string>
     <string name="action_switch_layout">Switch Layout</string>
+    <string name="finish_button">Finish</string>
 
     <string name="create_exercise">Create Exercise</string>
     <string name="create_workout">Create Workout</string>
@@ -26,6 +27,7 @@
     <string name="workout_item_action_rename">Rename</string>
     <string name="workout_item_action_duplicate">Duplicate</string>
     <string name="workout_item_action_delete">Delete</string>
+    <string name="new_workout_template_title">New workout template</string>
 
     <string name="exercise_detail_fragment_label">{exerciseLabel}</string>
     <string-array name="muscle_groups">

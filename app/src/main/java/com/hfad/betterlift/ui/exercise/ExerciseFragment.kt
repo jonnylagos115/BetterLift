@@ -10,14 +10,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.R
-import com.hfad.betterlift.adapter.ExercisesFragmentAdapter
+import com.hfad.betterlift.adapter.ExerciseFragmentListAdapter
 import com.hfad.betterlift.const.FragmentType
-import com.hfad.betterlift.databinding.FragmentExercisesBinding
+import com.hfad.betterlift.databinding.FragmentExerciseBinding
 
-class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener {
+class ExerciseFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener {
 
-    private val TAG = "ExercisesFragment"
-    private var _binding: FragmentExercisesBinding? = null
+    private val TAG = "ExerciseFragment"
+    private var _binding: FragmentExerciseBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -26,19 +26,17 @@ class ExercisesFragment : Fragment(), ExerciseNewDialogFragment.OnClickListener 
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Retrieve and inflate the layout for this fragment
-        _binding = FragmentExercisesBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        _binding = FragmentExerciseBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
 
-        binding.exercisesList.adapter = ExercisesFragmentAdapter(FragmentType.EXERCISES)
+        binding.exercisesList.adapter = ExerciseFragmentListAdapter(FragmentType.EXERCISES)
         binding.exercisesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-
 
         // Add menu items without using the FragmentType Menu APIs
         // Note how we can tie the MenuProvider to the viewLifecycleOwner

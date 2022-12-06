@@ -10,15 +10,17 @@ import com.hfad.betterlift.R
 import com.hfad.betterlift.databinding.FragmentExercisesListItemBinding
 import com.hfad.betterlift.models.Exercise
 import com.hfad.betterlift.data.ExerciseRepo
-import com.hfad.betterlift.ui.exercise.ExercisesFragmentDirections
 import com.hfad.betterlift.const.FragmentType
+import com.hfad.betterlift.ui.exercise.ExerciseFragmentDirections
 
-class ExercisesFragmentAdapter (
+class ExerciseFragmentListAdapter (
     private val fragment: Int
-    ): RecyclerView.Adapter<ExercisesFragmentAdapter.ExercisesViewHolder>()
+    ): RecyclerView.Adapter<ExerciseFragmentListAdapter.ExercisesViewHolder>()
 {
     var item_selected_position = -1
     private val TAG = "ExercisesFragAdapter"
+    private var selectedListItems = mutableListOf<Exercise>()
+
 
     inner class ExercisesViewHolder(private val binding: FragmentExercisesListItemBinding) :
         RecyclerView.ViewHolder(binding.root){
@@ -29,8 +31,7 @@ class ExercisesFragmentAdapter (
             } else {
                 itemView.setOnClickListener {
                     val exercise = ExerciseRepo.exercise[adapterPosition]
-
-                    val action = ExercisesFragmentDirections.actionExercisesFragmentToExerciseDetailFragment(exercise = exercise, exerciseLabel = exercise.exerciseName)
+                    val action = ExerciseFragmentDirections.actionNavExerciseToNavExerciseDetail(exercise = exercise, exerciseLabel = exercise.exerciseName)
                     itemView.findNavController().navigate(action)
                 }
             }
@@ -47,21 +48,21 @@ class ExercisesFragmentAdapter (
             }
         }
 
-        fun changeImageOnSelectedItem(imageResId: Int, exercise: Exercise) {
+        private fun changeImageOnSelectedItem(imageResId: Int, exercise: Exercise) {
             var drawableImage: Int = 0
 
-            Log.d(TAG, "Before current tag: ${binding.exerciseImageView.tag}")
             if (exercise.isSelected == false) {
                 drawableImage = R.drawable.icons8_done_50
                 exercise.isSelected = true;
+                selectedListItems.add(exercise)
                 Log.d(TAG, "Tag: default to selected")
             }else {
                 drawableImage = imageResId
                 exercise.isSelected = false;
+                selectedListItems.remove(exercise)
                 Log.d(TAG, "Tag: selected to default")
             }
             binding.exerciseImageView.setImageResource(drawableImage)
-            Log.d(TAG, "After current tag: ${binding.exerciseImageView.tag}")
         }
     }
 
@@ -83,5 +84,12 @@ class ExercisesFragmentAdapter (
         Log.d(TAG, "itemView clicked")
         item_selected_position = adapterPosition
         notifyItemChanged(adapterPosition)
+    }
+
+    fun getSelectedItems(): MutableList<Exercise> {
+        for (exercise in selectedListItems){
+            exercise.isSelected = false
+        }
+        return selectedListItems
     }
 }
