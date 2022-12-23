@@ -1,6 +1,9 @@
-package com.hfad.betterlift.models
+package com.hfad.betterlift.domain
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.hfad.betterlift.domain.Exercise
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

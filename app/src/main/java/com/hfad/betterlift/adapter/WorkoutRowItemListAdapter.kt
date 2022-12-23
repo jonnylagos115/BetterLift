@@ -2,14 +2,11 @@ package com.hfad.betterlift.adapter
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hfad.betterlift.data.WorkoutRepo
 import com.hfad.betterlift.databinding.WorkoutRowListItemBinding
-import com.hfad.betterlift.models.Exercise
-import com.hfad.betterlift.models.Workout
+import com.hfad.betterlift.domain.Exercise
 
 class WorkoutRowItemListAdapter(
     private var exercise: Exercise

@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.hfad.betterlift.R
 import com.hfad.betterlift.databinding.FragmentNewExerciseBinding
-import com.hfad.betterlift.models.Exercise
-import com.hfad.betterlift.data.ExerciseRepo
+import com.hfad.betterlift.domain.Exercise
+import com.hfad.betterlift.repository.ExerciseRepo
 
 class ExerciseNewDialogFragment : DialogFragment() {
 
@@ -50,9 +50,9 @@ class ExerciseNewDialogFragment : DialogFragment() {
                 ) {_, _ ->
                     val exerciseText = binding.exerciseEditText.text.toString()
                     val selectedMuscleGroup = binding.selectedItemTextView.text.toString()
-                    val exercise = Exercise(selectedMuscleGroup, exerciseText, 0)
+                    val exercise = Exercise(selectedMuscleGroup, exerciseText)
                     if (exerciseText != "") {
-                        ExerciseRepo.exercise.add(exercise)
+                        ExerciseRepo.exerciseList.add(exercise)
                     }
                     this.onClickListener.onDialogPositiveClick()
                 }

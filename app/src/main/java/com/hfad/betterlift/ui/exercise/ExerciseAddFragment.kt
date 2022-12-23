@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.adapter.ExerciseFragmentListAdapter
 import com.hfad.betterlift.const.FragmentType
 import com.hfad.betterlift.databinding.FragmentExerciseAddBinding
-import com.hfad.betterlift.models.Workout
+import com.hfad.betterlift.domain.Workout
 
 class ExerciseAddFragment : Fragment() {
 

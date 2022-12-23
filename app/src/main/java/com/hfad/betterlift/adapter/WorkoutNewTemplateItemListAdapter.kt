@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.databinding.FragmentWorkoutNewTemplateListItemBinding
-import com.hfad.betterlift.models.Exercise
-import com.hfad.betterlift.models.Workout
+import com.hfad.betterlift.domain.Exercise
+import com.hfad.betterlift.domain.Workout
 
 class WorkoutNewTemplateItemListAdapter(
     private val workout: Workout

@@ -3,23 +3,19 @@ package com.hfad.betterlift.ui.workout
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.R
 import com.hfad.betterlift.adapter.WorkoutNewTemplateItemListAdapter
-import com.hfad.betterlift.data.WorkoutRepo
+import com.hfad.betterlift.repository.WorkoutRepo
 import com.hfad.betterlift.databinding.FragmentWorkoutNewTemplateBinding
-import com.hfad.betterlift.models.Workout
-import kotlin.properties.Delegates
+import com.hfad.betterlift.domain.Workout
 
 class WorkoutNewTemplateFragment : Fragment() {
     private val TAG = "WorkoutNewTemplate"

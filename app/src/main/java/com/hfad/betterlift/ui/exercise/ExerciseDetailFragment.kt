@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.hfad.betterlift.databinding.FragmentExerciseDetailBinding
-import com.hfad.betterlift.models.Exercise
+import com.hfad.betterlift.domain.Exercise
 
 class ExerciseDetailFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class ExerciseDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentExerciseDetailBinding.inflate(inflater, container, false)
         return binding.root
     }

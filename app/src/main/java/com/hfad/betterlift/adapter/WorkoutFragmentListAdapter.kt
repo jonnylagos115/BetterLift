@@ -3,9 +3,9 @@ package com.hfad.betterlift.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hfad.betterlift.data.WorkoutRepo
+import com.hfad.betterlift.repository.WorkoutRepo
 import com.hfad.betterlift.databinding.FragmentWorkoutTemplateListItemBinding
-import com.hfad.betterlift.models.Workout
+import com.hfad.betterlift.domain.Workout
 
 class WorkoutFragmentListAdapter()
     : RecyclerView.Adapter<WorkoutFragmentListAdapter.WorkoutViewHolder>()
