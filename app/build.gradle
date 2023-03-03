@@ -42,9 +42,9 @@ android {
 dependencies {
 
     // support libraries
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
 
     // Android KTX
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -83,16 +83,22 @@ dependencies {
     // arch components
     // ViewModel and LiveData
     def lifecycle_version = "2.5.1"
-    // implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
-    // logging
-    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Room dependency
-    def room_version = '2.4.3'
+    def room_version = '2.5.0'
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    //Paging dependency
+    def paging_version = "3.1.1"
+    implementation("androidx.paging:paging-runtime:$paging_version")
+
+    // Coil
+    implementation "io.coil-kt:coil:1.1.1"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

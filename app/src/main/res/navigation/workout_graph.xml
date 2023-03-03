@@ -3,36 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/workout"
-    app:startDestination="@id/nav_workout">
+    app:startDestination="@id/workoutFragment">
 
     <fragment
-        android:id="@+id/nav_workout"
+        android:id="@+id/workoutFragment"
         android:name="com.hfad.betterlift.ui.workout.WorkoutFragment"
         android:label="@string/menu_workout"
         tools:layout="@layout/fragment_workout" >
         <action
-            android:id="@+id/action_nav_workout_to_nav_workout_new_template_fragment"
-            app:destination="@id/nav_workout_new_template_fragment" />
+            android:id="@+id/action_workoutFragment_to_workoutEditTemplateFragment"
+            app:destination="@id/workoutEditTemplateFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nav_workout_new_template_fragment"
-        android:name="com.hfad.betterlift.ui.workout.WorkoutNewTemplateFragment"
+        android:id="@+id/workoutEditTemplateFragment"
+        android:name="com.hfad.betterlift.ui.workout.WorkoutEditTemplateFragment"
         android:label="WorkoutNewTemplateFragment"
-        tools:layout="@layout/fragment_workout_new_template">
+        tools:layout="@layout/fragment_workout_edit_template">
         <action
-            android:id="@+id/action_nav_workout_new_template_fragment_to_nav_exercise_add_fragment"
-            app:destination="@id/nav_exercise_add_fragment" />
+            android:id="@+id/action_nav_workout_new_template_fragment_to_exerciseAddFragment"
+            app:destination="@id/exerciseAddFragment" />
         <action
-            android:id="@+id/action_nav_workout_new_template_fragment_to_nav_workout"
-            app:destination="@id/nav_workout"
-            app:popUpTo="@id/nav_workout"
+            android:id="@+id/action_workoutEditTemplateFragment_to_workoutFragment"
+            app:destination="@id/workoutFragment"
+            app:popUpTo="@id/workoutFragment"
             app:popUpToInclusive="true" />
 
     </fragment>
     <fragment
-        android:id="@+id/nav_exercise_add_fragment"
+        android:id="@+id/exerciseAddFragment"
         android:name="com.hfad.betterlift.ui.exercise.ExerciseAddFragment"
-        android:label="ExerciseAddFragment"
-        tools:layout="@layout/fragment_exercise"/>
+        android:label="ExerciseAddFragment" >
+        <action
+            android:id="@+id/action_exerciseAddFragment_to_workoutEditTemplateFragment"
+            app:destination="@id/workoutEditTemplateFragment"
+            app:popUpTo="@id/workoutEditTemplateFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

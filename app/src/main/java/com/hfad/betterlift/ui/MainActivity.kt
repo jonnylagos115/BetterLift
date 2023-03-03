@@ -10,18 +10,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.GsonBuilder
 import com.hfad.betterlift.R
-import com.hfad.betterlift.repository.ExerciseRepo
 import com.hfad.betterlift.databinding.ActivityMainBinding
-import com.hfad.betterlift.domain.Exercise
-import com.hfad.betterlift.network.ExerciseService
-import com.hfad.betterlift.network.model.ExerciseNetworkMapper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,27 +35,11 @@ class MainActivity : AppCompatActivity() {
         bottomNav = binding.bottomNavigationBar
         bottomNav.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_profile, R.id.nav_workout, R.id.nav_exercise))
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_profile, R.id.workoutFragment, R.id.nav_exercise))
         navController.addOnDestinationChangedListener { _: NavController, destination: NavDestination, _: Bundle? ->
             bottomNav.isVisible = appBarConfiguration.topLevelDestinations.contains(destination.id)
-            Log.d(TAG, "inside destchanged")
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Enables access to the networks data
-        val service = Retrofit.Builder()
-            .baseUrl("https://api.api-ninjas.com/v1/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(ExerciseService::class.java)
-
-        val mapper = ExerciseNetworkMapper()
-        CoroutineScope(IO).launch {
-            val response = service.getAll(
-                token = "OX2kc/JkfNvfZz2r6wP37A==FLYB4Z09hGYrQSaO"
-            )
-            ExerciseRepo.exerciseList.addAll(mapper.fromEntityList(response)as MutableList<Exercise>)
-        }
     }
 
 
@@ -74,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         Log.d(TAG, "navigateUp pressed")
-        return navController.navigateUp(appBarConfiguration)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     /*

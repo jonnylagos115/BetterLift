@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/workout">
+    app:startDestination="@id/exercise">
 
     <include app:graph="@navigation/profile_graph"/>
     <include app:graph="@navigation/workout_graph"/>

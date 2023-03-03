@@ -89,7 +89,7 @@
         </TableLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/workout_row_list"
+            android:id="@+id/workout_edit_set_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:nestedScrollingEnabled="false"
@@ -104,8 +104,8 @@
             android:layout_margin="4dp"
             android:padding="8dp"
             android:text="@string/add_set"
-            app:layout_constraintTop_toBottomOf="@id/workout_row_list"
-            app:layout_constraintStart_toStartOf="@id/workout_row_list"
+            app:layout_constraintTop_toBottomOf="@id/workout_edit_set_list"
+            app:layout_constraintStart_toStartOf="@id/workout_edit_set_list"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

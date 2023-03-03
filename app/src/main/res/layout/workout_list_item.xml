@@ -44,7 +44,7 @@
             android:id="@+id/workout_template_info_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/half_standard_margin"
             android:layout_marginStart="12dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="#8A000000"
@@ -53,6 +53,18 @@
             app:layout_constraintTop_toBottomOf="@id/last_performed_text_view"
             tools:text="4x Chest Press"/>
 
+        <TextView
+            android:id="@+id/workout_notes_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="@dimen/half_standard_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#8A000000"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/workout_template_info_text_view"
+            tools:text="Workout Notes"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
