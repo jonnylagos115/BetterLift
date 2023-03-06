@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,8 +15,6 @@ import com.hfad.betterlift.adapter.ExerciseListAdapter
 import com.hfad.betterlift.databinding.FragmentExerciseAddBinding
 import com.hfad.betterlift.utils.Injector
 import com.hfad.betterlift.viewmodels.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ExerciseAddFragment : Fragment() {
@@ -29,11 +26,8 @@ class ExerciseAddFragment : Fragment() {
     private val binding get() = _binding!!
     private val adapter get() = _adapter!!
 
-    private val exerciseViewModel: ExerciseViewModel by viewModels {
+    private val exerciseViewModel: ExerciseViewModel by activityViewModels {
         Injector.provideExerciseViewModelFactory(requireContext())
-    }
-    private val workoutEditSharedViewModel: WorkoutEditTemplateViewModel by activityViewModels {
-        Injector.provideWorkoutEditTemplateViewModelFactory(requireContext())
     }
 
     override fun onCreateView(
@@ -51,55 +45,44 @@ class ExerciseAddFragment : Fragment() {
 
         binding.apply {
             exercisesList.adapter = adapter
-            exercisesList.layoutManager = LinearLayoutManager(view?.context, RecyclerView.VERTICAL, false)
+            exercisesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         }
 
-        binding.bindState()
-
-            // Add menu items without using the FragmentType Menu APIs
-            // Note how we can tie the MenuProvider to the viewLifecycleOwner
-            // and an optional Lifecycle.State (here, RESUMED) to indicate when
-            // the menu should be visible
+        // Refresh view state for list each time fragment is navigated to as destination
+        exerciseViewModel.toggleSubmitLatestListStatus(true)
+        subscribeToUiState()
     }
 
-    private fun FragmentExerciseAddBinding.bindState() {
-        bindExercisesList()
-
-        bindFABSave()
-        // Consuming WorkoutEditTemplateViewModel state
+    private fun subscribeToUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                workoutEditSharedViewModel.uiState.collect { currentState ->
-                    if (!currentState.isPrevSelectedIdListEmpty) {
-                        currentState.isPrevSelectedIdListEmpty = false
-                        exerciseViewModel.clearSelectedExerciseIdList()
+                exerciseViewModel.uiState.collect { state ->
+                    if (state.submitLatestList) {
+                        adapter.addHeaderAndSubmitList(state.latestExerciseItemList)
+                        exerciseViewModel.toggleSubmitLatestListStatus(false)
+                    }
+                    if (state.navigateToWorkoutEdit) {
+                        val action = ExerciseAddFragmentDirections.actionExerciseAddFragmentToWorkoutEditTemplateFragment(state.latestSelectedExerciseIdList.toIntArray())
+                        findNavController().navigate(action)
+                        exerciseViewModel.resetNavigateStatus()
                     }
                 }
             }
         }
+        setupFABSave()
     }
 
-    private fun FragmentExerciseAddBinding.bindExercisesList() {
-        // Consuming ExerciseViewModel state
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                exerciseViewModel.uiState.collect { currentState ->
-                    Log.d(TAG, "exerciseAddUiState consumed")
-                    if (currentState.hasExerciseListUpdated) {
-                        adapter.addHeaderAndSubmitList(exerciseViewModel.exerciseItems)
-                    }
-                }
-            }
+    private fun setupFABSave() {
+        binding.FABSaveButton.setOnClickListener {
+            exerciseViewModel.bindSelectedIdListToUiState()
         }
     }
 
-    private fun FragmentExerciseAddBinding.bindFABSave() {
-        FABSaveButton.setOnClickListener {
-            val selectedExerciseIdList = exerciseViewModel.getSelectedExerciseIdList()
-            val action = ExerciseAddFragmentDirections.actionExerciseAddFragmentToWorkoutEditTemplateFragment()
-            Log.d(TAG, selectedExerciseIdList.toString())
-            workoutEditSharedViewModel.receiveSelectedExerciseIdList(selectedExerciseIdList)
-            findNavController().navigate(action)
+    private fun View.setVisibility(visible: Boolean) {
+        visibility = if (visible) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 

@@ -27,6 +27,11 @@
             app:destination="@id/workoutFragment"
             app:popUpTo="@id/workoutFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedIdList"
+            app:argType="integer[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
     </fragment>
     <fragment

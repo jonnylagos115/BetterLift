@@ -14,18 +14,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import coil.load
 import com.hfad.betterlift.R
 import com.hfad.betterlift.databinding.FragmentExerciseDetailBinding
 import com.hfad.betterlift.domain.Exercise
 import com.hfad.betterlift.utils.Injector
-import com.hfad.betterlift.viewmodels.ExerciseDetailViewModel
+import com.hfad.betterlift.viewmodels.ExerciseItemUiState
 import com.hfad.betterlift.viewmodels.ExerciseViewModel
 import kotlinx.coroutines.launch
+import coil.load
 
+private const val TAG = "ExerciseDetailFragment"
 class ExerciseDetailFragment : Fragment() {
 
-    private val TAG = "ExerciseDetailFragment"
     private var _binding: FragmentExerciseDetailBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,6 +33,10 @@ class ExerciseDetailFragment : Fragment() {
     private val navArgs: ExerciseDetailFragmentArgs by navArgs()
     private val exerciseViewModel: ExerciseViewModel by activityViewModels {
         Injector.provideExerciseViewModelFactory(requireContext())
+    }
+
+    init {
+        Log.d(TAG, "Initializing ExerciseDetailFragment")
     }
 
     override fun onCreateView(
@@ -47,18 +51,17 @@ class ExerciseDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val exerciseId = navArgs.exerciseId
-        collectUiState(exerciseId)
-    }
-
-    private fun collectUiState(exerciseId: Int){
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
+                exerciseViewModel.uiState.collect { state ->
+                    val bindExercise = state.latestExerciseItemList.find { exerciseId == it.exerciseId }!!
+                    bind(bindExercise)
+                }
             }
         }
     }
 
-    private fun bind(exercise: Exercise) {
+    private fun bind(exercise: ExerciseItemUiState) {
         binding.apply {
             bindImage(exerciseImage, exercise.imageResUrl)
             var incre = 0
@@ -111,6 +114,16 @@ class ExerciseDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.d(TAG, "onDestroyView() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         Log.d(TAG, "onDestroy() called")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "onDetach() called")
     }
 }

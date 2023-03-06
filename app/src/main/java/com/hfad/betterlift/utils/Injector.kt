@@ -5,7 +5,6 @@ import androidx.annotation.VisibleForTesting
 import com.hfad.betterlift.database.AppDatabase
 import com.hfad.betterlift.network.NetworkService
 import com.hfad.betterlift.repository.Repository
-import com.hfad.betterlift.viewmodels.ExerciseDetailViewModelFactory
 import com.hfad.betterlift.viewmodels.ExerciseViewModelFactory
 import com.hfad.betterlift.viewmodels.WorkoutEditTemplateViewModelFactory
 import com.hfad.betterlift.viewmodels.WorkoutViewModelFactory
@@ -13,7 +12,6 @@ import com.hfad.betterlift.viewmodels.WorkoutViewModelFactory
 
 interface ViewModelFactoryProvider {
     fun provideExerciseViewModelFactory(context: Context): ExerciseViewModelFactory
-    fun provideExerciseDetailViewModelFactory(context: Context): ExerciseDetailViewModelFactory
     fun provideWorkoutViewModelFactory(context: Context): WorkoutViewModelFactory
     fun provideWorkoutEditTemplateViewModelFactory(context: Context): WorkoutEditTemplateViewModelFactory
 }
@@ -45,11 +43,6 @@ private object DefaultViewModelProvider: ViewModelFactoryProvider {
     override fun provideExerciseViewModelFactory(context: Context): ExerciseViewModelFactory {
         val repository = getRepository(context)
         return ExerciseViewModelFactory(repository)
-    }
-
-    override fun provideExerciseDetailViewModelFactory(context: Context): ExerciseDetailViewModelFactory {
-        val repository = getRepository(context)
-        return ExerciseDetailViewModelFactory(repository)
     }
 
     override fun provideWorkoutViewModelFactory(context: Context): WorkoutViewModelFactory {

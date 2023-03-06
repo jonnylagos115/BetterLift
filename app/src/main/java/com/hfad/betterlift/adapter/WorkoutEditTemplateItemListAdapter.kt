@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.databinding.WorkoutEditTemplateListItemBinding
 import com.hfad.betterlift.viewmodels.WorkoutEditSetItemUiState
-import com.hfad.betterlift.viewmodels.WorkoutEditTemplateItemUiState
+import com.hfad.betterlift.viewmodels.WorkoutEditItemUiState
 
 private const val TAG = "WorkoutNewTItemAdapter"
 
 class WorkoutEditTemplateItemListAdapter() :
-    ListAdapter<WorkoutEditTemplateItemUiState, WorkoutEditTemplateItemListAdapter.WorkoutEditTemplateItemViewHolder>(WorkoutEditTemplateItemDiffCallback())
+    ListAdapter<WorkoutEditItemUiState, WorkoutEditTemplateItemListAdapter.WorkoutEditTemplateItemViewHolder>(WorkoutEditTemplateItemDiffCallback())
 {
 
     override fun onBindViewHolder(holder: WorkoutEditTemplateItemViewHolder, position: Int) {
@@ -36,7 +36,7 @@ class WorkoutEditTemplateItemListAdapter() :
             binding.workoutEditSetList.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
         }
 
-        fun bind(item: WorkoutEditTemplateItemUiState) {
+        fun bind(item: WorkoutEditItemUiState) {
             binding.apply {
                 exerciseNameTextView.text = item.exerciseName
                 adapter.submitList(item.workoutEditSetItems)
@@ -58,12 +58,12 @@ class WorkoutEditTemplateItemListAdapter() :
     }
 }
 
-class WorkoutEditTemplateItemDiffCallback : DiffUtil.ItemCallback<WorkoutEditTemplateItemUiState>() {
-    override fun areItemsTheSame(oldItem: WorkoutEditTemplateItemUiState, newItem: WorkoutEditTemplateItemUiState): Boolean {
+class WorkoutEditTemplateItemDiffCallback : DiffUtil.ItemCallback<WorkoutEditItemUiState>() {
+    override fun areItemsTheSame(oldItem: WorkoutEditItemUiState, newItem: WorkoutEditItemUiState): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: WorkoutEditTemplateItemUiState, newItem: WorkoutEditTemplateItemUiState): Boolean {
+    override fun areContentsTheSame(oldItem: WorkoutEditItemUiState, newItem: WorkoutEditItemUiState): Boolean {
         return oldItem.exerciseName == newItem.exerciseName
     }
 }

@@ -18,5 +18,4 @@
         android:padding="@dimen/half_standard_padding"
         android:clipToPadding="false"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

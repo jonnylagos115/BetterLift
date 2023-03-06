@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.betterlift.R
@@ -20,6 +21,7 @@ import com.hfad.betterlift.adapter.WorkoutEditTemplateItemListAdapter
 import com.hfad.betterlift.databinding.FragmentWorkoutEditTemplateBinding
 import com.hfad.betterlift.domain.Workout
 import com.hfad.betterlift.utils.Injector
+import com.hfad.betterlift.viewmodels.ExerciseViewModel
 import com.hfad.betterlift.viewmodels.WorkoutEditTemplateViewModel
 import com.hfad.betterlift.viewmodels.WorkoutViewModel
 import kotlinx.coroutines.launch
@@ -31,11 +33,11 @@ class WorkoutEditTemplateFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val navArgs: WorkoutEditTemplateFragmentArgs by navArgs()
     private lateinit var adapter: WorkoutEditTemplateItemListAdapter
-    private val workoutEditTemplateSharedViewModel: WorkoutEditTemplateViewModel by activityViewModels {
+    private val workoutEditViewModel: WorkoutEditTemplateViewModel by activityViewModels {
         Injector.provideWorkoutEditTemplateViewModelFactory(requireContext())
     }
-
     private val workoutSharedViewModel: WorkoutViewModel by activityViewModels {
         Injector.provideWorkoutViewModelFactory(requireContext())
     }
@@ -50,38 +52,46 @@ class WorkoutEditTemplateFragment : Fragment() {
         return binding.root
     }
 
-    private fun subscribeUi() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        lateinit var title: String
+        lateinit var workoutNotes: String
+        val selectedIdList = navArgs.selectedIdList?.toList()
+
+        if (selectedIdList != null)
+            workoutEditViewModel.receiveSelectedExerciseIdList(selectedIdList)
+        binding.apply {
+            title = titleNewTemplateEditText.text.toString()
+            workoutNotes = workoutNoteEditText.text.toString()
+            newWorkoutTemplatesList.adapter = adapter
+            newWorkoutTemplatesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+        }
+        subscribeToUiState()
+        setupAddExerciseButton()
+        setupMenuItemDropdownList()
+    }
+
+    private fun subscribeToUiState()  {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                workoutEditTemplateSharedViewModel.uiState.collect { currentState ->
-                    Log.d(TAG, "comsumed uiState")
-                    adapter.submitList(currentState.workoutEditTemplateItems)
+                workoutEditViewModel.uiState.collect { state ->
+                    adapter.submitList(state.workoutEditTemplateItems)
                 }
             }
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val menuHost: MenuHost = requireActivity()
-        val navController = findNavController()
-        lateinit var title: String
-        lateinit var workoutNotes: String
-
-        binding.apply {
-            title = titleNewTemplateEditText.text.toString()
-            workoutNotes = workoutNoteEditText.text.toString()
-            newWorkoutTemplatesList.adapter = adapter
-            newWorkoutTemplatesList.layoutManager = LinearLayoutManager(view?.context, RecyclerView.VERTICAL, false)
-            addExerciseButton.setOnClickListener {
-                val action = WorkoutEditTemplateFragmentDirections.actionNavWorkoutNewTemplateFragmentToExerciseAddFragment()
-                findNavController().navigate(action)
-            }
+    private fun setupAddExerciseButton() {
+        binding.addExerciseButton.setOnClickListener {
+            val action = WorkoutEditTemplateFragmentDirections.actionNavWorkoutNewTemplateFragmentToExerciseAddFragment()
+            findNavController().navigate(action)
         }
-        subscribeUi()
+    }
 
+    private fun setupMenuItemDropdownList() {
+        val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.workout_tab_app_bar_menu, menu)
+                menuInflater.inflate(R.menu.workout_tab_app_bar_menu, menu)
             }
 
             override fun onPrepareMenu(menu: Menu) {
@@ -95,7 +105,7 @@ class WorkoutEditTemplateFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when(menuItem.itemId) {
                     R.id.workoutFragment -> {
-                        navController.popBackStack()
+                        findNavController().popBackStack()
                         true
                     }
                     else -> false
@@ -104,18 +114,31 @@ class WorkoutEditTemplateFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
     /**
      * Frees the binding object when the FragmentType is destroyed.
      */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    /**
-     * Called when Fragments own lifecycle is destroyed
-     */
-    override fun onDestroy() {
-        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
     }
 }

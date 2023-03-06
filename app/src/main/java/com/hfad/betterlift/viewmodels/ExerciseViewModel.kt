@@ -2,13 +2,10 @@ package com.hfad.betterlift.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.hfad.betterlift.database.ExerciseDao
 import com.hfad.betterlift.domain.Exercise
-import com.hfad.betterlift.domain.sortByAlphabeticalOrder
 import com.hfad.betterlift.repository.Repository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * View Model to keep a reference to the Exercise repository and an up-to-date list of all items.
@@ -24,24 +21,18 @@ class ExerciseViewModel internal constructor(
     private val _uiState = MutableStateFlow(ExercisesUiState())
     val uiState: StateFlow<ExercisesUiState> = _uiState.asStateFlow()
 
-    val latestExerciseList: SharedFlow<List<ExerciseItemUiState>> = repository.exerciseStream.map {
+    private val latestExerciseList: SharedFlow<List<ExerciseItemUiState>> = repository.exerciseStream.map {
         it.asExerciseItemUiState()
     }.shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            replay = 1
-        )
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        replay = 1
+    )
 
-    val currentExerciseList
-        get() = run {
-            viewModelScope.launch {
-                latestExerciseList.collect
-            }
-        }
+    lateinit var currentExerciseList: List<ExerciseItemUiState>
 
-    private val _navigateToExerciseDetail = MutableSharedFlow<ExerciseItemUiState>()
-    val navigateToExerciseDetail
-        get() = _navigateToExerciseDetail
+    init {
+    }
 
     //private lateinit var exerciseDetailInfo: (Int, String) -> (Int, String)
 
@@ -54,23 +45,47 @@ class ExerciseViewModel internal constructor(
 
     init {
         Log.d(TAG, "ExerciseViewModel initializing")
+        getLatestExerciseListState()
     }
 
     private fun onExerciseItemClicked(item: ExerciseItemUiState) {
-        viewModelScope.launch {
-            _navigateToExerciseDetail.emit(item)
+        navigateToExerciseDetail(item)
+    }
+
+    private fun navigateToExerciseDetail(item: ExerciseItemUiState) {
+        _uiState.update {
+            it.copy(navigateToExerciseDetail = true, destinationItemDetail = item)
         }
     }
-    /**
-     * Methods that pertain to ExerciseFragment UiState management
-     */
 
+    fun resetNavigateStatus() {
+        _uiState.update {
+            it.copy(navigateToExerciseDetail = false, navigateToWorkoutEdit = false)
+        }
+    }
 
-    /**
-     * Methods that pertain to ExerciseAddFragment UiState management
-     */
+    private fun getLatestExerciseListState(){
+        viewModelScope.launch {
+            latestExerciseList.collect { list ->
+                _uiState.update { state ->
+                    state.copy(latestExerciseItemList = list, submitLatestList = true)
+                }
+            }
+        }
+    }
 
+    fun toggleSubmitLatestListStatus(status: Boolean) {
+        _uiState.update {
+            it.copy(submitLatestList = status)
+        }
+    }
     private val latestSelectedExerciseIdList = mutableListOf<Int>()
+
+    fun bindSelectedIdListToUiState() {
+        _uiState.update { state ->
+            state.copy(latestSelectedExerciseIdList = latestSelectedExerciseIdList, navigateToWorkoutEdit = true)
+        }
+    }
 
     fun getSelectedExerciseIdList() = latestSelectedExerciseIdList
 
@@ -180,7 +195,12 @@ class ExerciseViewModel internal constructor(
 }
 
 data class ExercisesUiState(
-    val navigateToExerciseDetail: Boolean = false
+    val navigateToExerciseDetail: Boolean = false,
+    val navigateToWorkoutEdit: Boolean = false,
+    val destinationItemDetail: ExerciseItemUiState? = null,
+    val submitLatestList: Boolean = false,
+    val latestExerciseItemList: List<ExerciseItemUiState> = listOf(),
+    val latestSelectedExerciseIdList: List<Int> = listOf()
 )
 
 data class ExerciseItemUiState(

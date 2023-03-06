@@ -21,9 +21,9 @@ import com.hfad.betterlift.viewmodels.ExerciseViewModel
 import com.hfad.betterlift.viewmodels.ItemUiAction
 import kotlinx.coroutines.launch
 
+private const val TAG = "ExerciseFragment"
 class ExerciseFragment : Fragment() {
 
-    private val TAG = "ExerciseFragment"
     private var _binding: FragmentExerciseBinding? = null
     private var _adapter: ExerciseListAdapter? = null
     // This property is only valid between onCreateView and
@@ -35,6 +35,12 @@ class ExerciseFragment : Fragment() {
         Injector.provideExerciseViewModelFactory(requireContext())
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "OnCreate()")
+        _adapter = ExerciseListAdapter(ItemUiAction.NAVIGATE)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,44 +49,34 @@ class ExerciseFragment : Fragment() {
         Log.d(TAG, "onCreateView() called")
         // Retrieve and inflate the layout for this fragment
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
-        _adapter = ExerciseListAdapter(ItemUiAction.NAVIGATE)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, "onViewCreated() called")
-        // Attach an observer on the allItems list to update the UI automatically when the data
-        // changes.
 
         binding.apply {
             exercisesList.adapter = adapter
             exercisesList.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         }
-
-        bindState()
+        subscribeToUiState()
         setupMenuItemDropdownList()
     }
 
-    private fun bindState() {
-        bindExercisesList()
-    }
-
-    private fun bindExercisesList() {
+    private fun subscribeToUiState() {
         // Consuming ExerciseViewModel state
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    exerciseViewModel.navigateToExerciseDetail.collect { exercise ->
-                        val action = ExerciseFragmentDirections.actionNavExerciseToNavExerciseDetail(
-                            exercise.exerciseId,
-                            exercise.exerciseName)
+                exerciseViewModel.uiState.collect{ state ->
+                    if (state.navigateToExerciseDetail) {
+                        val item = state.destinationItemDetail!!
+                        val action = ExerciseFragmentDirections.actionNavExerciseToNavExerciseDetail(item.exerciseId, item.exerciseName)
                         findNavController().navigate(action)
+                        exerciseViewModel.resetNavigateStatus()
                     }
-                }
-
-                launch {
-                    exerciseViewModel.latestExerciseList.collect {
-                        adapter.addHeaderAndSubmitList(it)
+                    if (state.submitLatestList) {
+                        adapter.addHeaderAndSubmitList(state.latestExerciseItemList)
+                        exerciseViewModel.toggleSubmitLatestListStatus(false)
                     }
                 }
             }
@@ -132,11 +128,19 @@ class ExerciseFragment : Fragment() {
         super.onStop()
         Log.d(TAG, "onStop() called")
     }
-    /**
-     * Frees the binding object when the FragmentType is destroyed.
-     */
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "onDetach() called")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "onDestroyView() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
         _adapter = null
         Log.d(TAG, "onDestroy() called")

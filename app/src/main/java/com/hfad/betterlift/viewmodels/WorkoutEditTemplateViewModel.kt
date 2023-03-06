@@ -16,25 +16,21 @@ class WorkoutEditTemplateViewModel internal constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(WorkoutEditTemplateUiState())
-    val uiState: StateFlow<WorkoutEditTemplateUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(WorkoutEditUiState())
+    val uiState: StateFlow<WorkoutEditUiState> = _uiState.asStateFlow()
 
-    private val latestSelectedExerciseListState = MutableStateFlow<List<WorkoutEditTemplateItemUiState>>(
-        listOf()
-    )
+    private val workoutEditExerciseList = MutableSharedFlow<List<WorkoutEditItemUiState>>()
 
     init {
-        subscribeLatestSelectedExerciseState()
+        getLatestWorkoutEditListState()
     }
 
-    private fun subscribeLatestSelectedExerciseState() {
+    private fun getLatestWorkoutEditListState() {
         viewModelScope.launch {
-            latestSelectedExerciseListState.collect { latestList ->
-                Log.d(TAG, "consuming latest selected exercise list state")
-                _uiState.update { currentState ->
-                    currentState.workoutEditTemplateItems.addAll(latestList)
-                    currentState.isPrevSelectedIdListEmpty = false
-                    currentState.copy(workoutEditTemplateItems = currentState.workoutEditTemplateItems)
+            workoutEditExerciseList.collect { list ->
+                _uiState.update { state ->
+                    state.workoutEditTemplateItems
+                    state.copy(workoutEditTemplateItems = list)
                 }
             }
         }
@@ -45,31 +41,32 @@ class WorkoutEditTemplateViewModel internal constructor(
      * we bind the values to the workout template view items. Think of an other way to clear out the selection id list if use case where add exercises buttons is clicked again to add on to the
      * already selected workout template view items, not clear it out.
      */
-    fun receiveSelectedExerciseIdList(exerciseIdList: MutableList<Int>) {
+    fun receiveSelectedExerciseIdList(exerciseIdList: List<Int>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                latestSelectedExerciseListState.value = repository.retrieveSelectedExerciseItems(exerciseIdList).asWorkoutEditTemplateItemUiState()
+                val list = repository.retrieveSelectedExerciseItems(exerciseIdList).asWorkoutEditTemplateItemUiState()
+                workoutEditExerciseList.emit(list)
             }
             Log.d(TAG, "selectedIdList received")
         }
     }
 
-    private fun List<Exercise>.asWorkoutEditTemplateItemUiState() : List<WorkoutEditTemplateItemUiState> {
+    private fun List<Exercise>.asWorkoutEditTemplateItemUiState() : List<WorkoutEditItemUiState> {
         Log.d(TAG, this.toString())
         return map {
-            WorkoutEditTemplateItemUiState(exerciseName = it.exerciseName)
+            WorkoutEditItemUiState(exerciseName = it.exerciseName)
         }
     }
 }
 
-data class WorkoutEditTemplateUiState(
+data class WorkoutEditUiState(
     var templateTitle: String = "",
     var templateNotes: String = "",
-    val workoutEditTemplateItems: MutableList<WorkoutEditTemplateItemUiState> = mutableListOf(),
+    val workoutEditTemplateItems: List<WorkoutEditItemUiState> = listOf(),
     var isPrevSelectedIdListEmpty: Boolean = true
 )
 
-data class WorkoutEditTemplateItemUiState(
+data class WorkoutEditItemUiState(
     val exerciseName: String,
     val workoutEditSetItems: MutableList<WorkoutEditSetItemUiState> = mutableListOf(WorkoutEditSetItemUiState())
 )
